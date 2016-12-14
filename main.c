@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/14 10:24:22 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/14 14:36:18 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,50 @@
 #include "fdf.h"
 #include <stdio.h>
 
-/*
-void coord_to_line(int xi,int yi,int xf,int yf) 
+
+void print_line(void *mlx, void *win, int *first, int *last) 
 {
-	void *mlx;
-	void *win;
 	int x;
 	int y;
 	float a;
 	float b;
 
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 400, 400, "mlx 42");
-	a = (float) (yf-yi) / (xf-xi); 
-	b = yi - a * xi; 
+	printf("This is first X: %d\n", first[0]);
+	printf("This is first Y: %d\n", first[1]);
+	printf("This is last X: %d\n", last[0]);
+	printf("This is last Y: %d\n", last[1]);
 
-	x = xi;
-	while (x <= xf) 
+	a = (float) (last[1] - first[1]) / (last[0] - first[0]); 
+	b = first[1] - a * first[0]; 
+
+	x = first[0];
+	while (x <= last[0]) 
 	{ 
 		y = (int) (a * x + b); 
 		mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
 		x++;
 	}
+}
+
+void print_cords(int **grid, int xlen)
+{
+	void *mlx;
+	void *win;
+	int i;
+	int	k;
+	
+	i = 0;
+	mlx = mlx_init();
+	win = mlx_new_window(mlx, 700, 700, "Merry Christmas");
+	while(i < 10)
+	{
+		k = i + 1;
+		print_line(mlx, win, grid[i], grid[k]);
+		i++;
+	}
 	mlx_loop(mlx);
 }
-*/
-
+/*
 void		print_cords(int		**grid)
 {
 	int		i;
@@ -60,7 +78,7 @@ void		print_cords(int		**grid)
 	}
 	mlx_loop(mlx);
 }
-
+*/
 int			main(int ac, char **av)
 {
 int		xlen;
@@ -93,7 +111,7 @@ int		i;
 		i++;
 	}
 	//ft_putnbr(ft_strstrlen(grid));
-	print_cords(print);
+	print_cords(print, xlen);
 	//ft_putstr("\n\n\n");
 	//ft_putstr(str);
 	//	coord_to_line(0, 0, 300, 300);
