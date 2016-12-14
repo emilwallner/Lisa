@@ -6,13 +6,25 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:59:46 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/13 19:28:00 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/14 22:40:30 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 #define FDF_H
 #include <stdio.h>
+
+typedef struct s_coord {
+	int		x;
+	int		y;
+	int		h;
+	int		color;
+}		t_coord;
+
+typedef struct s_vars {
+	void	*mlx;
+	void	*win;
+}		t_vars;
 
 char	*ft_file_to_str(char *file, int *xlen);
 int		*ft_set_vars();

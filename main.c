@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/14 14:36:18 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/14 20:26:33 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,83 +16,153 @@
 #include "fdf.h"
 #include <stdio.h>
 
-
-void print_line(void *mlx, void *win, int *first, int *last) 
+void rotate_print(int	**print)
 {
-	int x;
-	int y;
-	float a;
-	float b;
+	float	const1;
+	float	const2;
+	int		i;
 
-	printf("This is first X: %d\n", first[0]);
-	printf("This is first Y: %d\n", first[1]);
-	printf("This is last X: %d\n", last[0]);
-	printf("This is last Y: %d\n", last[1]);
+	const1 = 0.5;
+	const2 = 1;
 
-	a = (float) (last[1] - first[1]) / (last[0] - first[0]); 
-	b = first[1] - a * first[0]; 
-
-	x = first[0];
-	while (x <= last[0]) 
-	{ 
-		y = (int) (a * x + b); 
-		mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
-		x++;
+	i = 0;
+	while(print[i] != NULL)
+	{
+		print[i][0] = (const1 * print[i][0]) - (const2 * print[i][1]);
+		print[i][1] = print[i][2] + ((const1  / 2) * print[i][0]) + ((const2 / 2) * print[i][1]);
+		i++;
 	}
 }
 
-void print_cords(int **grid, int xlen)
+void print_line(void *mlx, void *win, int *first, int *last) 
+{
+		int dx, dy, i, e;
+		int incx, incy, inc1, inc2;
+		int x,y;
+
+		dx = last[0] - first[0];
+		dy = last[1] - first[1];
+
+		if(dx < 0) dx = -dx;
+		if(dy < 0) dy = -dy;
+		incx = 1;
+		if(last[0] < first[0]) incx = -1;
+		incy = 1;
+		if(last[1] < first[1]) incy = -1;
+		x=first[0];
+		y=first[1];
+
+		if(dx > dy)
+		{
+			mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
+			e = 2*dy - dx;
+			inc1 = 2*( dy -dx);
+			inc2 = 2*dy;
+			for(i = 0; i < dx; i++)
+			{
+				if(e >= 0)
+				{
+					y += incy;
+					e += inc1;
+				}
+				else e += inc2;
+				x += incx;
+				mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
+			}
+		}
+		else
+		{
+			mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
+			e = 2*dx - dy;
+			inc1 = 2*( dx - dy);
+			inc2 = 2*dx;
+			for(i = 0; i < dy; i++)
+			{
+				if(e >= 0)
+				{
+					x += incx;
+					e += inc1;
+				}
+				else e += inc2;
+				y += incy;
+				mlx_pixel_put(mlx, win, x, y, 0x0000FF9A); 
+			}
+		}
+}
+
+int zoom_that_shit(void *win, int keycode, void *param)
+{
+	if (keycode == 78)
+		mlx_clear_window(param, win);
+	return (0);
+}
+
+void print_cords(int **print, int xlen)
 {
 	void *mlx;
 	void *win;
 	int i;
 	int	k;
-	
+	int		totlen;
+
+	totlen = 0;
+	while (print[totlen] != NULL)
+		totlen++;
 	i = 0;
 	mlx = mlx_init();
-	win = mlx_new_window(mlx, 700, 700, "Merry Christmas");
-	while(i < 10)
+	rotate_print(print);
+	win = mlx_new_window(mlx, 2000, 2000, "Merry Christmas");
+	while(print[i] != NULL)
 	{
-		k = i + 1;
-		print_line(mlx, win, grid[i], grid[k]);
+		if(i < totlen - xlen)
+		{
+			k = i + xlen;
+			print_line(mlx, win, print[i], print[k]);
+		}
+		if((i + 1) % xlen != 0)
+		{
+			k = i + 1;
+			print_line(mlx, win, print[i], print[k]);
+		}
 		i++;
 	}
+	mlx_key_hook(win, zoom_that_shit, mlx);
 	mlx_loop(mlx);
 }
 /*
-void		print_cords(int		**grid)
-{
-	int		i;
-	void *mlx;
-	void *win;
-	int x;
-	int y;
+   void		print_cords(int		**grid)
+   {
+   int		i;
+   void *mlx;
+   void *win;
+   int x;
+   int y;
 
-	i = 0;
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 400, 400, "mlx 42");
-	while (grid[i] != NULL) 
-	{ 
-		mlx_pixel_put(mlx, win, grid[i][0], grid[i][1], 0x0000FF9A); 
-		i++;
-	}
-	mlx_loop(mlx);
-}
-*/
+   i = 0;
+   mlx = mlx_init();
+   win = mlx_new_window(mlx, 400, 400, "mlx 42");
+   while (grid[i] != NULL) 
+   { 
+   mlx_pixel_put(mlx, win, grid[i][0], grid[i][1], 0x0000FF9A); 
+   i++;
+   }
+   mlx_loop(mlx);
+   }
+   */
 int			main(int ac, char **av)
 {
-int		xlen;
-char	*str;
-char	**grid;
-int		*vars;
-int		**print;
-int		i;
+	int		xlen;
+	char	*str;
+	char	**grid;
+	int		*vars;
+	int		**print;
+	int		i;
 
 
 	xlen = 0;
 	if (ac != 2)
 		return (0);
-//	ft_putstr("ok");
+	//	ft_putstr("ok");
 	if(!(str = ft_file_to_str(av[1], &xlen)))
 		return (0);
 	//ft_putstr(str);
@@ -104,12 +174,12 @@ int		i;
 	vars = ft_set_vars();
 	print = ft_str_to_grid(grid, vars, xlen);
 	i = 0;
+	/*
 	while (print[i] != NULL)
 	{
-		printf("This is X: %d\n", print[i][0]);
-		printf("This is Y: %d\n", print[i][1]);
+		printf("This is X: %d\n", print[i][2]);
 		i++;
-	}
+	}*/
 	//ft_putnbr(ft_strstrlen(grid));
 	print_cords(print, xlen);
 	//ft_putstr("\n\n\n");
