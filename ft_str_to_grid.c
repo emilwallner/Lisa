@@ -6,17 +6,19 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:28:30 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/14 10:59:52 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/15 17:41:30 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+#include "fdf.h"
 
-int **ft_xy_depth(int **print, int *vars, int xlen, char **grid)
+t_coord **ft_xy_depth(t_coord **print, int *vars, int xlen, char **grid)
 {
 	int		col;
 	int		row;
 	int		i;
+	t_coord *point;
 
 	i = 0;
 	row = 0;
@@ -24,28 +26,27 @@ int **ft_xy_depth(int **print, int *vars, int xlen, char **grid)
 	while(grid[i] != '\0')
 	{
 		col++;
-		print[i] = (int*)malloc(sizeof(int) * 6);
-		print[i][0] = col * vars[3] + vars[0];
-		print[i][1] = row * vars[3] + vars[1];
+		point = (t_coord*)malloc(sizeof(t_coord));
+		point->x = col * vars[3] + vars[0];
+		point->y = row * vars[3] + vars[1];
 		if ((i + 1) % xlen == 0)
 		{
 			row++;
 			col = -1;
 		}
-		print[i][2] = vars[2] * ft_atoi(grid[i]);
-		print[i][5] = '\0';
+		point->h = vars[2] * ft_atoi(grid[i]);
+		print[i] = point;
 		i++;
 	}
 	print[i] = NULL;
 	return (print);
 }
 
-int		**ft_str_to_grid(char **grid, int *vars, int xlen)
+t_coord		**ft_str_to_grid(char **grid, int *vars, int xlen)
 {
-	int		**print;
+	t_coord		**print;
 
-	print = (int**)malloc(sizeof(int*) * ft_strstrlen(grid) + 1);
+	print = (t_coord**)malloc(sizeof(t_coord) * ft_strstrlen(grid) + 1);
 	ft_xy_depth(print, vars, xlen, grid);
-
 	return (print);
 }
