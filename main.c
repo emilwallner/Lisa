@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 17:04:59 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/16 20:00:42 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,6 @@
 #include "./libft/libft.h"
 #include "fdf.h"
 #include <stdio.h>
-
-void rotate_print(t_vars	*e)
-{
-	int		i;
-	i = 0;
-	while(e->print[i] != NULL)
-	{
-		e->print[i]->x = (e->const1 * e->print[i]->x) - (e->const2 * e->print[i]->y);
-		e->print[i]->y = e->print[i]->h + ((e->const1  / 2) * e->print[i]->x) + ((e->const2 / 2) * e->print[i]->y);
-		i++;
-	}
-}
-
-
-int zoom_that_shit(int keycode, t_vars *e)
-{
-	if (keycode == 53)
-	{
-		mlx_destroy_window(e->mlx, e->win);
-		exit(0);
-	}
-	if (keycode == 78)
-		mlx_clear_window(e->mlx, e->win);
-	return (0);
-}
 
 
 
@@ -65,14 +40,79 @@ void print_cords(t_vars *e)
 	}
 }
 
+void	adjust_vars(t_vars *e)
+{
+	int		i;
+
+	i = 0;
+	while(e->print[i] != NULL)
+	{
+		e->print[i]->x = e->print[i]->x + (e->print[i]->x * e->zoom);
+		e->print[i]->y = e->print[i]->y + (e->print[i]->y * e->zoom);
+		e->print[i]->h = e->print[i]->h * e->depth;
+		e->print[i]->x = (e->const1 * e->print[i]->x) - (e->const2 * e->print[i]->y);
+		e->print[i]->y = (e->print[i]->h * e->depth) + ((e->const1  / 2) * e->print[i]->x) + ((e->const2 / 2) * e->print[i]->y);
+		e->print[i]->x = e->print[i]->x + e->xc;
+		e->print[i]->y = e->print[i]->y + e->yc;
+		i++;
+	}
+}
+
+void	clean_and_launch(t_vars *e)
+{
+	mlx_clear_window(e->mlx, e->win);
+	print_cords(e);
+}
+
+void	move_me(int keycode, t_vars *e)
+{
+	int i;
+
+	i = 0;
+	if (keycode == 125)
+		e->yc = e->yc + 100;
+	else if (keycode == 256)
+		e->yc = e->yc - 100;
+	else if (keycode == 124)
+		e->xc = e->xc - 100;
+	else 
+		e->xc = e->xc + 100;
+	while (e->print[i] != NULL)
+{
+	e->print[i]->x = e->print[i]->x + e->xc;
+	e->print[i]->x = e->print[i]->x + e->xc;
+	clean_and_launch(e);
+	i++;
+}
+}
+int zoom_that_shit(int keycode, t_vars *e)
+{
+	printf("This is keycode: %d\n", keycode);
+	if (keycode == 53)
+	{
+		mlx_destroy_window(e->mlx, e->win);
+		exit(0);
+	}
+	if(keycode == 125 || keycode == 256 || keycode == 124 || keycode == 123)
+	{
+		move_me(keycode, e);
+	}
+	if (keycode == 78)
+	{
+		mlx_clear_window(e->mlx, e->win);
+	}
+
+	return (0);
+}
+
 void	run_screen(t_vars *e)
 {
 	e->mlx = mlx_init();
-	e->const1 = 0.5;
-	e->const2 = 1;
-	e->win = mlx_new_window(e->mlx, SCREEN_W, SCREEN_H, "Merry Christmas");
+	e->win = mlx_new_window(e->mlx, SCREEN, SCREEN - 500, "Merry Christmas");
+	ft_set_vars(e);
+	adjust_vars(e);
+//	rotate_print(e);
 	print_cords(e);
-	rotate_print(e);
 	mlx_key_hook(e->win, zoom_that_shit, e);
 	mlx_loop(e->mlx);
 }
@@ -93,7 +133,6 @@ int			main(int ac, char **av)
 	e = (t_vars*)malloc(sizeof(t_vars));
 	e->xlen = xlen;
 	grid = ft_strsplit(str, ' ');
-	vars = ft_set_vars(e);
 	e->print = ft_str_to_grid(e, grid);
 	e->xlen = xlen;
 	printf("This is it: %d\n", e->totlen);

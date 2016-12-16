@@ -6,64 +6,69 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 15:40:51 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 15:42:19 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/16 18:07:30 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
 #include "mlx.h"
+#include <stdlib.h>
 
 void print_line(t_vars *e, t_coord *first, t_coord *last) 
 {
-		int dx, dy, i, f;
-		int incx, incy, inc1, inc2;
-		int x,y;
+		t_line		*l;
 
-		dx = last->x - first->x;
-		dy = last->y - first->y;
+		l = (t_line*)malloc(sizeof(t_line));
+		l->dx = last->x - first->x;
+		l->dy = last->y - first->y;
+		if(l->dx < 0) l->dx = -(l->dx);
+		if(l->dy < 0) l->dy = -(l->dy);
+		l->incx = 1;
+		if(last->x < first->x) l->incx = -1;
+		l->incy = 1;
+		if(last->y < first->y) l->incy = -1;
+		l->x=first->x;
+		l->y=first->y;
 
-		if(dx < 0) dx = -dx;
-		if(dy < 0) dy = -dy;
-		incx = 1;
-		if(last->x < first->x) incx = -1;
-		incy = 1;
-		if(last->y < first->y) incy = -1;
-		x=first->x;
-		y=first->y;
-
-		if(dx > dy)
+		if(l->dx > l->dy)
 		{
-			mlx_pixel_put(e->mlx, e->win, x, y, 0x0000FF9A); 
-			f = 2*dy - dx;
-			inc1 = 2*( dy -dx);
-			inc2 = 2*dy;
-			for(i = 0; i < dx; i++)
+			mlx_pixel_put(e->mlx, e->win, l->x, l->y, 0x0000FF9A); 
+			l->f = 2*l->dy - l->dx;
+			l->inc1 = 2*( l->dy - l->dx);
+			l->inc2 = 2*l->dy;
+			l->i = 0;
+			while(l->i < l->dx)
 			{
-				if(f >= 0)
+				if(l->f >= 0)
 				{
-					y += incy;
-					f += inc1;
+					l->y += l->incy;
+					l->f += l->inc1;
 				}
-				else f += inc2;
-				x += incx;
-				mlx_pixel_put(e->mlx, e->win, x, y, 0x0000FF9A); 
+				else l->f += l->inc2;
+				l->x += l->incx;
+				mlx_pixel_put(e->mlx, e->win, l->x, l->y, 0x0000FF9A); 
+			l->i++;
 			}
 		}
 		else
 		{
-			mlx_pixel_put(e->mlx, e->win, x, y, 0x0000FF9A); 
-			f = 2*dx - dy;
-			inc1 = 2*( dx - dy);
-			inc2 = 2*dx;
-			for(i = 0; i < dy; i++)
+			mlx_pixel_put(e->mlx, e->win, l->x, l->y, 0x0000FF9A); 
+			l->f = 2*l->dx - l->dy;
+			l->inc1 = 2*( l->dx - l->dy);
+			l->inc2 = 2*l->dx;
+			l->i = 0;
+			while(l->i < l->dy)
 			{
-				if(f >= 0)
+				if(l->f >= 0)
 				{
-					x += incx;
-					f += inc1;
+					l->x += l->incx;
+					l->f += l->inc1;
 				}
-				else f += inc2;
-				y += incy;
-				mlx_pixel_put(e->mlx, e->win, x, y, 0x0000FF9A); 
+				else l->f += l->inc2;
+				l->y += l->incy;
+				mlx_pixel_put(e->mlx, e->win, l->x, l->y, 0x0000FF9A); 
+			l->i++;
 			}
 		}
 }
+
+
