@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 20:00:42 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/16 23:43:53 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,44 +47,19 @@ void	adjust_vars(t_vars *e)
 	i = 0;
 	while(e->print[i] != NULL)
 	{
-		e->print[i]->x = e->print[i]->x + (e->print[i]->x * e->zoom);
-		e->print[i]->y = e->print[i]->y + (e->print[i]->y * e->zoom);
-		e->print[i]->h = e->print[i]->h * e->depth;
-		e->print[i]->x = (e->const1 * e->print[i]->x) - (e->const2 * e->print[i]->y);
-		e->print[i]->y = (e->print[i]->h * e->depth) + ((e->const1  / 2) * e->print[i]->x) + ((e->const2 / 2) * e->print[i]->y);
-		e->print[i]->x = e->print[i]->x + e->xc;
-		e->print[i]->y = e->print[i]->y + e->yc;
+		e->print[i]->xp = e->print[i]->x;
+		e->print[i]->yp = e->print[i]->y;
+		e->print[i]->xp = e->print[i]->xp + (e->print[i]->xp * e->zoom);
+		e->print[i]->yp = e->print[i]->yp + (e->print[i]->yp * e->zoom);
+		e->print[i]->hp = e->print[i]->h * e->depth;
+		e->print[i]->xp = (e->const1 * e->print[i]->xp) - (e->const2 * e->print[i]->yp);
+		e->print[i]->yp = (e->print[i]->h * e->depth) + ((e->const1  / 2) * e->print[i]->xp) + ((e->const2 / 2) * e->print[i]->yp);
+		e->print[i]->xp = e->print[i]->xp + e->xc;
+		e->print[i]->yp = e->print[i]->yp + e->yc;
 		i++;
 	}
 }
 
-void	clean_and_launch(t_vars *e)
-{
-	mlx_clear_window(e->mlx, e->win);
-	print_cords(e);
-}
-
-void	move_me(int keycode, t_vars *e)
-{
-	int i;
-
-	i = 0;
-	if (keycode == 125)
-		e->yc = e->yc + 100;
-	else if (keycode == 256)
-		e->yc = e->yc - 100;
-	else if (keycode == 124)
-		e->xc = e->xc - 100;
-	else 
-		e->xc = e->xc + 100;
-	while (e->print[i] != NULL)
-{
-	e->print[i]->x = e->print[i]->x + e->xc;
-	e->print[i]->x = e->print[i]->x + e->xc;
-	clean_and_launch(e);
-	i++;
-}
-}
 int zoom_that_shit(int keycode, t_vars *e)
 {
 	printf("This is keycode: %d\n", keycode);
@@ -93,14 +68,12 @@ int zoom_that_shit(int keycode, t_vars *e)
 		mlx_destroy_window(e->mlx, e->win);
 		exit(0);
 	}
-	if(keycode == 125 || keycode == 256 || keycode == 124 || keycode == 123)
-	{
-		move_me(keycode, e);
-	}
-	if (keycode == 78)
-	{
-		mlx_clear_window(e->mlx, e->win);
-	}
+	if(keycode == 125 || keycode == 126)
+		move_me_upndown(keycode, e);
+	if(keycode == 123 || keycode == 124)
+		move_me_leftnright(keycode, e);
+	if (keycode == 78 || keycode == 69)
+		move_me_in(keycode, e);
 
 	return (0);
 }

@@ -6,28 +6,29 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 15:40:51 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 18:07:30 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/16 23:44:58 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "fdf.h"
 #include "mlx.h"
 #include <stdlib.h>
 
+
 void print_line(t_vars *e, t_coord *first, t_coord *last) 
 {
 		t_line		*l;
 
 		l = (t_line*)malloc(sizeof(t_line));
-		l->dx = last->x - first->x;
-		l->dy = last->y - first->y;
+		l->dx = last->xp - first->xp;
+		l->dy = last->yp - first->yp;
 		if(l->dx < 0) l->dx = -(l->dx);
 		if(l->dy < 0) l->dy = -(l->dy);
 		l->incx = 1;
-		if(last->x < first->x) l->incx = -1;
+		if(last->xp < first->xp) l->incx = -1;
 		l->incy = 1;
-		if(last->y < first->y) l->incy = -1;
-		l->x=first->x;
-		l->y=first->y;
+		if(last->yp < first->yp) l->incy = -1;
+		l->x=first->xp;
+		l->y=first->yp;
 
 		if(l->dx > l->dy)
 		{

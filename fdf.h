@@ -6,20 +6,24 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:59:46 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 19:05:59 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/16 23:45:13 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 #define FDF_H
 #include <stdio.h>
+#include "mlx.h"
 
 #define SCREEN 1700
 
 typedef struct	s_coord {
 	int			x;
+	int			xp;
 	int			y;
+	int			yp;
 	int			h;
+	int			hp;
 }				t_coord;
 
 typedef struct s_line {
@@ -50,7 +54,11 @@ typedef struct	s_vars {
 	int			yc;
 }				t_vars;
 
-
+void	adjust_vars(t_vars *e);
+void	move_me_in(int keycode, t_vars *e);
+void	print_cords(t_vars *e);
+void	move_me_upndown(int keycode, t_vars	*e);
+void	move_me_leftnright(int keycode, t_vars *e);
 char	*ft_file_to_str(char *file, int *xlen);
 void	ft_set_vars(t_vars *e);
 t_coord		**ft_str_to_grid(t_vars *e, char **grid);
