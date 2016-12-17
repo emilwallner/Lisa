@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:59:46 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/16 23:45:13 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/17 16:19:44 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ typedef struct	s_coord {
 	int			yp;
 	int			h;
 	int			hp;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
 }				t_coord;
 
 typedef struct s_line {
@@ -44,7 +47,6 @@ typedef struct	s_vars {
 	void		*win;
 	t_coord		**print;
 	int			depth;
-	t_line		*l;
 	int			zoom;
 	float		const1;
 	float		const2;
@@ -52,9 +54,19 @@ typedef struct	s_vars {
 	int			xlen;
 	int			xc;
 	int			yc;
+	int			coloron;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned int color;
 }				t_vars;
 
+int		zoom_that_shit(int keycode, t_vars *e);
+void	create_trip(t_vars *e);
 void	adjust_vars(t_vars *e);
+void	increase_const_one(int keycode, t_vars *e);
+void	increase_depth(int keycode, t_vars *e);
+void	increase_const_two(int keycode, t_vars *e);
 void	move_me_in(int keycode, t_vars *e);
 void	print_cords(t_vars *e);
 void	move_me_upndown(int keycode, t_vars	*e);
