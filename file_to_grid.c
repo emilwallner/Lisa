@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 10:31:24 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/17 17:59:28 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 14:32:10 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "fdf.h"
 #include <unistd.h>
 
-char		*ft_file_to_str(char *file, int *xlen)
+char	*ft_file_to_str(char *file, int *xlen)
 {
 	char *line;
 	char *tmp;
@@ -22,6 +22,7 @@ char		*ft_file_to_str(char *file, int *xlen)
 	int		fd;
 	int		ret;
 
+	ret = 1;
 	fd = open(file, O_RDONLY);
 	if(fd == -1)
 			exit(0);

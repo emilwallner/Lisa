@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/17 17:25:07 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 14:30:34 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			main(int ac, char **av)
 	char	*str;
 	t_vars	*e;
 	char	**grid;
-	int		*vars;
+//	int		*vars;
 
 	xlen = 0;
 	if (ac != 2)
