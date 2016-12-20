@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 16:03:15 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 16:05:15 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 16:11:56 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	move_me_upndown(int keycode, t_vars *e)
 		e->yc = e->yc - 50;
 	clean_and_launch(e);
 }
+
 void	move_me_leftnright(int keycode, t_vars *e)
 {
 	if (keycode == 124)

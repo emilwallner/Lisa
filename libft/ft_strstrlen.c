@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:50:25 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/13 17:51:32 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 16:18:02 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@ int		ft_strstrlen(char **str)
 	int		len;
 
 	len = 0;
-	while(str[len] != 0)
+	while (str[len] != 0)
 		len++;
 	return (len);
 }
