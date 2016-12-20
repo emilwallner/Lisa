@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 14:30:34 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 15:59:32 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,13 @@ void	run_screen(t_vars *e)
 	e->win = mlx_new_window(e->mlx, SCREEN, SCREEN - 500, "Merry Christmas");
 	ft_set_vars(e);
 	adjust_vars(e);
-	print_cords(e);
-	mlx_string_put(e->mlx, e->win, 10, 0, 0xFFFFFF, "Disco Mode = RETURN");
-	//mlx_expose_hook(e->win, zoom_that_shit, e);
+	print_cords(e);	
+	mlx_string_put(e->mlx, e->win, 10, 10, 0xFFFFFF, "Disco Mode = RETURN");
+	mlx_string_put(e->mlx, e->win, 10, 30, 0xFFFFFF, "Move = <-, ->, up, down");
+	mlx_string_put(e->mlx, e->win, 10, 50, 0xFFFFFF, "Depth = 1 & 3");
+	mlx_string_put(e->mlx, e->win, 10, 70, 0xFFFFFF, "Tilt = 4 & 6");
+	mlx_string_put(e->mlx, e->win, 10, 90, 0xFFFFFF, "Stretch = 8 & 2");
+	mlx_string_put(e->mlx, e->win, 10, 110, 0xFFFFFF, "Zoom = - & +");
 	mlx_key_hook(e->win, zoom_that_shit, e);
 	mlx_loop(e->mlx);
 }
