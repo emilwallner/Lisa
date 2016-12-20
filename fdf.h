@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:59:46 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 16:22:56 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 16:47:38 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct		s_vars {
 	unsigned int	color;
 }					t_vars;
 
+void				ft_check_error(char *str);
 void				clean_and_launch(t_vars *e);
 int					zoom_that_shit(int keycode, t_vars *e);
 void				create_trip(t_vars *e);

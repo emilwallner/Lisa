@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 17:11:59 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 16:16:41 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 17:24:05 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,18 @@ int			main(int ac, char **av)
 
 	xlen = 0;
 	if (ac != 2)
+	{
+		ft_putstr("Usage: ./fdf filename\n");
 		return (0);
+	}
 	if (!(str = ft_file_to_str(av[1], &xlen)))
 		return (0);
-	e = (t_vars*)malloc(sizeof(t_vars));
+	ft_check_error(str);
+	if (!(e = (t_vars*)malloc(sizeof(t_vars))))
+		return (0);
 	e->xlen = xlen;
 	grid = ft_strsplit(str, ' ');
+	ft_strdel(&str);
 	e->print = ft_str_to_grid(e, grid);
 	e->xlen = xlen;
 	run_screen(e);

@@ -6,7 +6,7 @@
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 17:28:30 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 16:24:23 by ewallner         ###   ########.fr       */
+/*   Updated: 2016/12/20 17:23:20 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ t_coord		**ft_xy_depth(t_coord **print, char **grid, t_vars *e)
 	int		i;
 	t_coord *point;
 
-	i = 0;
+	i = -1;
 	row = 0;
 	col = -1;
-	while (grid[i] != '\0')
+	while (grid[++i] != '\0')
 	{
 		col++;
-		point = (t_coord*)malloc(sizeof(t_coord));
+		if (!(point = (t_coord*)malloc(sizeof(t_coord))))
+			exit(0);
 		point->x = col;
 		point->y = row;
 		if ((i + 1) % e->xlen == 0)
@@ -36,7 +37,6 @@ t_coord		**ft_xy_depth(t_coord **print, char **grid, t_vars *e)
 		}
 		point->h = ft_atoi(grid[i]);
 		print[i] = point;
-		i++;
 	}
 	print[i] = NULL;
 	return (print);
@@ -48,7 +48,8 @@ t_coord		**ft_str_to_grid(t_vars *e, char **grid)
 	int			totlen;
 
 	totlen = 0;
-	print = (t_coord**)malloc(sizeof(t_coord) * ft_strstrlen(grid) + 1);
+	if (!(print = (t_coord**)malloc(sizeof(t_coord) * ft_strstrlen(grid) + 1)))
+		exit(0);
 	ft_xy_depth(print, grid, e);
 	while (print[totlen] != NULL)
 		totlen++;
