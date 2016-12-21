@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ewallner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 15:40:51 by ewallner          #+#    #+#             */
-/*   Updated: 2016/12/20 15:04:02 by ewallner         ###   ########.fr       */
+/*   Created: 2016/12/20 19:16:35 by ewallner          #+#    #+#             */
+/*   Updated: 2016/12/20 19:20:44 by ewallner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,9 @@ void			print_line(t_vars *e, t_coord *first, t_coord *last)
 {
 	t_line		*l;
 
-	if (e->coloron == 1)
-		e->color = create_rnd(e);
-	else
-		e->color = 0x00FFFFFF;
-	l = (t_line*)malloc(sizeof(t_line));
+	e->color = e->coloron ? create_rnd(e) : 0x00FFFFFF;
+	if (!(l = (t_line*)malloc(sizeof(t_line))))
+		exit(0);
 	l->dx = last->xp - first->xp;
 	l->dy = last->yp - first->yp;
 	if (l->dx < 0)
